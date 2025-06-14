@@ -1,0 +1,14 @@
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/obj/Debug/net8.0/clase2.GeneratedMSBuildEditorConfig.editorconfig
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/obj/Debug/net8.0/clase2.AssemblyInfoInputs.cache
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/obj/Debug/net8.0/clase2.AssemblyInfo.cs
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/obj/Debug/net8.0/clase2.csproj.CoreCompileInputs.cache
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/bin/Debug/net8.0/clase2
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/bin/Debug/net8.0/clase2.deps.json
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/bin/Debug/net8.0/clase2.runtimeconfig.json
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/bin/Debug/net8.0/clase2.dll
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/bin/Debug/net8.0/clase2.pdb
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/obj/Debug/net8.0/clase2.dll
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/obj/Debug/net8.0/refint/clase2.dll
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/obj/Debug/net8.0/clase2.pdb
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/obj/Debug/net8.0/clase2.genruntimeconfig.cache
+/home/dar10/Documentos/metodologiaDeProgramacion/clase2/obj/Debug/net8.0/ref/clase2.dll

@@ -1,0 +1,14 @@
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.GeneratedMSBuildEditorConfig.editorconfig
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.AssemblyInfoInputs.cache
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.AssemblyInfo.cs
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.csproj.CoreCompileInputs.cache
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/bin/Debug/net8.0/clase4
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/bin/Debug/net8.0/clase4.deps.json
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/bin/Debug/net8.0/clase4.runtimeconfig.json
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/bin/Debug/net8.0/clase4.dll
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/bin/Debug/net8.0/clase4.pdb
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.dll
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/refint/clase4.dll
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.pdb
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.genruntimeconfig.cache
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/ref/clase4.dll
