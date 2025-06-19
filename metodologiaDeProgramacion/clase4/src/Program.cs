@@ -4,7 +4,7 @@ namespace src.clase4
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) 
         {
 
           // Prueba decoradores

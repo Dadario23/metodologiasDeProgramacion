@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace src.clase4
 {
-     public class DecoradorEstado : DecoradorAlumno
+     public class DecoradorEstado : DecoradorAlumno 
     {
         public DecoradorEstado(Alumno alumno) : base(alumno) { }
 

@@ -5,61 +5,80 @@ using System.Threading.Tasks;
 
 namespace clase5.src
 {
-    public class Alumno : Persona
-{
-    private int legajo;
-    private float promedio;
-    private static bool compararPorPromedio = false;
-
-    public Alumno(string nombre, int dni, int legajo, float promedio) 
-        : base(nombre, dni)
+    public class Alumno : Persona, IAlumno
     {
-        this.legajo = legajo;
-        this.promedio = promedio;
-    }
+        private int legajo;
+        private float promedio;
+        private int calificacion;
+        private static bool compararPorPromedio = false;
 
-    public virtual int ResponderPregunta(int pregunta)
-    {
-        Random rnd = new Random();
-        return rnd.Next(1, 4); 
-    }
-    public virtual int Calificación { get; set; }  
-    public virtual string MostrarCalificación() => $"{getNombre()}    {Calificación}";
-    public virtual int getLegajo() => legajo;
-    public virtual float getPromedio() => promedio;
+        public Alumno(string nombre, int dni, int legajo, float promedio) 
+            : base(nombre, dni)
+        {
+            this.legajo = legajo;
+            this.promedio = promedio;
+        }
 
-    public static void SetCompararPorPromedio(bool porPromedio)
-    {
-        compararPorPromedio = porPromedio;
-    }
+        public virtual int ResponderPregunta(int pregunta)
+        {
+            Random rnd = new Random();
+            return rnd.Next(1, 4); 
+        }
 
-    public static bool GetCompararPorPromedio()
-    {
-        return compararPorPromedio;
-    }
+        public int getCalificacion() => this.calificacion;
 
-    public override bool sosIgual(Comparable c)
-    {
-        Alumno otro = (Alumno)c;
-        return compararPorPromedio ? 
-            this.promedio == otro.promedio : 
-            this.legajo == otro.legajo;
-    }
+        public void setCalificacion(int calificacion) => this.calificacion = calificacion;
 
-    public override bool sosMenor(Comparable c)
-    {
-        Alumno otro = (Alumno)c;
-        return compararPorPromedio ? 
-            this.promedio < otro.promedio : 
-            this.legajo < otro.legajo;
-    }
+        public string MostrarCalificacion() => $"{getNombre()}    {calificacion}";
 
-    public override bool sosMayor(Comparable c)
-    {
-        Alumno otro = (Alumno)c;
-        return compararPorPromedio ? 
-            this.promedio > otro.promedio : 
-            this.legajo > otro.legajo;
+        public int getLegajo() => legajo;
+
+        public float getPromedio() => promedio;
+
+        // Cambio importante aquí - agregamos 'new' para el método getNombre
+        public new string getNombre() => base.getNombre();
+
+        public static void SetCompararPorPromedio(bool porPromedio)
+        {
+            compararPorPromedio = porPromedio;
+        }
+
+        public static bool GetCompararPorPromedio()
+        {
+            return compararPorPromedio;
+        }
+
+        public override bool sosIgual(Comparable c)
+        {
+            if (c is IAlumno otro)
+            {
+                return compararPorPromedio ? 
+                    this.promedio == otro.getPromedio() : 
+                    this.legajo == otro.getLegajo();
+            }
+            return false;
+        }
+
+        public override bool sosMenor(Comparable c)
+        {
+            if (c is IAlumno otro)
+            {
+                return compararPorPromedio ? 
+                    this.promedio < otro.getPromedio() : 
+                    this.legajo < otro.getLegajo();
+            }
+            return false;
+        }
+
+        public override bool sosMayor(Comparable c)
+        {
+            if (c is IAlumno otro)
+            {
+                return compararPorPromedio ? 
+                    this.promedio > otro.getPromedio() : 
+                    this.legajo > otro.getLegajo();
+            }
+            return false;
+        }
     }
-}
 }

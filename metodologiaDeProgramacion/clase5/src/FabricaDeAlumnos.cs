@@ -9,11 +9,12 @@ namespace clase5.src
     {
         protected override Comparable CrearAleatorio()
         {
-            return new Alumno(
+            return new AlumnoProxy(
                 generador.StringAleatorio(10),
                 generador.NumeroAleatorio(99999999),
                 generador.NumeroAleatorio(99999),
-                generador.NumeroAleatorio(10)
+                generador.NumeroAleatorio(10),
+                false 
             );
         }
 
@@ -28,8 +29,9 @@ namespace clase5.src
             int legajo = lector.NumeroPorTeclado();
             Console.Write("Promedio: ");
             int promedio = lector.NumeroPorTeclado();
-            
-            return new Alumno(nombre, dni, legajo, promedio);
+
+            return new AlumnoProxy(nombre, dni, legajo, promedio, false);
         }
     }
+
 }

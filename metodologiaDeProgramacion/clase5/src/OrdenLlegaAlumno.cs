@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 namespace clase5.src
 {
     public class OrdenLlegaAlumno : OrdenEnAula2
-{
-    private Aula aula;
-
-    public OrdenLlegaAlumno(Aula aula)
     {
-        this.aula = aula;
-    }
+        private Aula aula;
 
-    public void ejecutar(Comparable alumno)
-    {
-        aula.nuevoAlumno(alumno);
+        public OrdenLlegaAlumno(Aula aula)
+        {
+            this.aula = aula;
+        }
+
+        public void ejecutar(Comparable alumno)
+        {
+            aula.nuevoAlumno(alumno);
+        }
     }
-}
 
 }

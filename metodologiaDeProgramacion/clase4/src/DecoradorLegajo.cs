@@ -11,7 +11,7 @@ namespace src.clase4
 
         public override string MostrarCalificación()
         {
-            return $"{base.MostrarCalificación()} (Legajo: {getLegajo()})";
+            return $"{base.MostrarCalificación()} (Legajo: {getLegajo()})"; 
         }
     }
 }

@@ -7,35 +7,37 @@ namespace clase5.src
 {
     public class AlumnoAdapter : Student
     {
-        private Alumno _alumnoBase;  
+        private IAlumno _alumnoBase;
 
-    public AlumnoAdapter(Alumno alumno)
-    {
-        _alumnoBase = alumno;  
-    }
-    public int getScore() => _alumnoBase.Calificación;
+        public AlumnoAdapter(IAlumno alumno)
+        {
+            _alumnoBase = alumno;
+        }
 
-    public void setScore(int score)
-    {
-        _alumnoBase.Calificación = score;  
-    }
+        public int getScore() => _alumnoBase.getCalificacion();
+
+        public void setScore(int score) => _alumnoBase.setCalificacion(score);
 
         public string getName() => _alumnoBase.getNombre();
-        
+
         public int yourAnswerIs(int question) => _alumnoBase.ResponderPregunta(question);
-        
-        
 
-        public string showResult() => _alumnoBase.MostrarCalificación();
-        
-        public bool equals(Student student) 
-            => _alumnoBase.sosIgual(((AlumnoAdapter)student)._alumnoBase);
-        
-        public bool lessThan(Student student) 
-            => _alumnoBase.sosMenor(((AlumnoAdapter)student)._alumnoBase);
-        
-        public bool greaterThan(Student student) 
-            => _alumnoBase.sosMayor(((AlumnoAdapter)student)._alumnoBase);
+        public string showResult() => _alumnoBase.MostrarCalificacion();
 
-  }
+        public bool equals(Student student)
+        {
+            return student is AlumnoAdapter other && _alumnoBase.sosIgual(other._alumnoBase);
+        }
+
+        public bool lessThan(Student student)
+        {
+            return student is AlumnoAdapter other && _alumnoBase.sosMenor(other._alumnoBase);
+        }
+
+        public bool greaterThan(Student student)
+        {
+            return student is AlumnoAdapter other && _alumnoBase.sosMayor(other._alumnoBase);
+        }
+    }
+
 }

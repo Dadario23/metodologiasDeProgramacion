@@ -12,3 +12,4 @@
 /home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.pdb
 /home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.genruntimeconfig.cache
 /home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/ref/clase4.dll
+/home/dar10/Documentos/metodologiaDeProgramacion/clase4/obj/Debug/net8.0/clase4.sourcelink.json
