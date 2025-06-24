@@ -5,42 +5,36 @@ using System.Threading.Tasks;
 
 namespace clase2
 {
-    public class Numero : Comparable
+    public class Numero : IComparable
     {
-        private int valor;
+         private int valor;
 
         public Numero(int v)
         {
             valor = v;
         }
 
-        public int getValor()
+        public int GetValor()
         {
-            return this.valor;
+            return valor;
+        }
+        public bool SosIgual(IComparable comparable)
+        {
+            Numero otro = (Numero)comparable;
+            return valor == otro.GetValor();
         }
 
-        public bool sosIgual(Comparable c)
+        public bool SosMenor(IComparable comparable)
         {
-            Numero otroNumero = (Numero)c;
-            return this.valor == otroNumero.getValor();
+            Numero otro = (Numero)comparable;
+            return valor < otro.GetValor();
         }
 
-        public bool sosMenor(Comparable c)
+        public bool SosMayor(IComparable comparable)
         {
-            Numero otroNumero = (Numero)c;
-            return this.valor < otroNumero.getValor();
+            Numero otro = (Numero)comparable;
+            return valor > otro.GetValor();
         }
-
-        public bool sosMayor(Comparable c)
-        {
-            Numero otroNumero = (Numero)c;
-            return this.valor > otroNumero.getValor();
-        }
-
-        public override string ToString()
-    {
-        return valor.ToString(); 
-    }
 
          
     }

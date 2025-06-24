@@ -5,46 +5,41 @@ using System.Threading.Tasks;
 
 namespace clase2
 {
-   public class Alumno : Persona
-{
-    private int legajo;
-    private float promedio;
-    private static IComparacionAlumno estrategiaComparacion = new CompararPorLegajo(); 
-
-    public Alumno(string nombre, int dni, int legajo, float promedio) 
-        : base(nombre, dni)
+   public class Alumno : Persona, IComparable
     {
-        this.legajo = legajo;
-        this.promedio = promedio;
-    }
+        private int legajo;
+        private double promedio;
+        private IEstrategiaComparacion estrategia;
 
-    public int getLegajo() => legajo;
-    public float getPromedio() => promedio;
+        public Alumno(string nombre, int dni, int legajo, double promedio)
+            : base(nombre, dni)
+        {
+            this.legajo = legajo;
+            this.promedio = promedio;
+            this.estrategia = new EstrategiaPorNombre(); // Estrategia por defecto
+        }
 
-    
-    public static void SetEstrategiaComparacion(IComparacionAlumno estrategia)
-    {
-        estrategiaComparacion = estrategia;
-    }
+        public int GetLegajo() => legajo;
+        public double GetPromedio() => promedio;
 
-    public override bool sosIgual(Comparable c)
-    {
-        return estrategiaComparacion.SosIgual(this, (Alumno)c);
-    }
+        public void SetEstrategia(IEstrategiaComparacion estrategia)
+        {
+            this.estrategia = estrategia;
+        }
 
-    public override bool sosMenor(Comparable c)
-    {
-        return estrategiaComparacion.SosMenor(this, (Alumno)c);
-    }
+        public override bool SosIgual(IComparable comparable)
+        {
+            return estrategia.Comparar(this, (Alumno)comparable);
+        }
 
-    public override bool sosMayor(Comparable c)
-    {
-        return estrategiaComparacion.SosMayor(this, (Alumno)c);
-    }
+        public override bool SosMenor(IComparable comparable)
+        {
+            return !estrategia.Comparar(this, (Alumno)comparable);
+        }
 
-    public override string ToString()
-    {
-        return $"{base.ToString()}, Legajo: {legajo}, Promedio: {promedio:0.0}";
+        public override bool SosMayor(IComparable comparable)
+        {
+            return estrategia.Comparar(this, (Alumno)comparable);
+        }
     }
-}
 }

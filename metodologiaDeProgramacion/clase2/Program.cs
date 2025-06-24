@@ -1,100 +1,130 @@
 ﻿using System;
 using clase2;
 
-class Program
+namespace clase2
 {
-    static void Main(string[] args)
-    {       
-        
-        Conjunto conjunto = new Conjunto(); 
-        LlenarAlumnos(conjunto);
 
-        Console.WriteLine($"Cantidad de elementos: {conjunto.cuantos()}");
 
-        cambiarEstrategia(conjunto, new CompararPorNombre());
-        informar(conjunto, "por Nombre");
-
-        cambiarEstrategia(conjunto, new CompararPorLegajo());
-        informar(conjunto, "por Legajo");
-
-        cambiarEstrategia(conjunto, new CompararPorPromedio());
-        informar(conjunto, "por Promedio");
-
-        cambiarEstrategia(conjunto, new CompararPorDni());
-        informar(conjunto, "por DNI");
-    }
-
-    static void llenar(Coleccionable coleccion)
+    class Program
     {
-        Random random = new Random();
-        for (int i = 0; i < 20; i++)
+        static void Main(string[] args)
         {
-            int valorAleatorio = random.Next(1, 101);
-            coleccion.agregar(new Numero(valorAleatorio));
+            Console.WriteLine("=== DEMOSTRACIÓN PATRONES PRACTICA 2 ===");
+            Console.WriteLine("=== Strategy e Iterator ===\n");
+
+            // 1. Creación de colecciones
+            Console.WriteLine("Creando colecciones (Pila, Cola, Conjunto)...");
+            Pila pila = new Pila();
+            Cola cola = new Cola();
+            Conjunto conjunto = new Conjunto();
+
+            // 2. Llenar con alumnos
+            Console.WriteLine("\nLlenando colecciones con alumnos...");
+            LlenarAlumnos(pila);
+            LlenarAlumnos(cola);
+            LlenarAlumnos(conjunto);
+
+            // 3. Demostración del patrón Iterator
+            Console.WriteLine("\n=== Demostración del patrón Iterator ===");
+            Console.WriteLine("\nElementos en la Pila:");
+            ImprimirElementos(pila);
+
+            Console.WriteLine("\nElementos en la Cola:");
+            ImprimirElementos(cola);
+
+            Console.WriteLine("\nElementos en el Conjunto (sin repetidos):");
+            ImprimirElementos(conjunto);
+
+            // 4. Demostración del patrón Strategy
+            Console.WriteLine("\n=== Demostración del patrón Strategy ===");
+
+            // Creación de estrategias
+            IEstrategiaComparacion estrategiaNombre = new EstrategiaPorNombre();
+            IEstrategiaComparacion estrategiaDni = new EstrategiaPorDNI();
+            IEstrategiaComparacion estrategiaLegajo = new EstrategiaPorLegajo();
+            IEstrategiaComparacion estrategiaPromedio = new EstrategiaPorPromedio();
+
+            // Aplicar diferentes estrategias a la pila
+            Console.WriteLine("\nCambiando estrategias en la Pila:");
+
+            Console.WriteLine("\nEstrategia por Nombre:");
+            CambiarEstrategia(pila, estrategiaNombre);
+            InformarColeccion(pila);
+
+            Console.WriteLine("\nEstrategia por DNI:");
+            CambiarEstrategia(pila, estrategiaDni);
+            InformarColeccion(pila);
+
+            Console.WriteLine("\nEstrategia por Legajo:");
+            CambiarEstrategia(pila, estrategiaLegajo);
+            InformarColeccion(pila);
+
+            Console.WriteLine("\nEstrategia por Promedio:");
+            CambiarEstrategia(pila, estrategiaPromedio);
+            InformarColeccion(pila);
         }
-    }    
 
-    static void LlenarAlumnos(Coleccionable coleccionable)
-    {
-        Random random = new Random();
-        string[] nombres = {"Juan", "María", "Carlos", "Ana", "Luis", "Lucía", "Pedro", "Sofía"};
-    
-        for (int i = 0; i < 20; i++)
+        static void LlenarAlumnos(IColeccionable coleccion)
         {
-            string nombre = nombres[random.Next(nombres.Length)];
-            int dni = 30000000 + random.Next(10000000);
-            int legajo = 10000 + random.Next(90000);
-            float promedio = (float)Math.Round(1 + random.NextDouble() * 9, 1);
-        
-            coleccionable.agregar(new Alumno(nombre, dni, legajo, promedio));
-        }
-    }
+            Random random = new Random();
+            string[] nombres = { "Juan", "Ana", "Luis", "Maria", "Carlos", "Sofia", "Pedro", "Laura" };
 
-        static void informar(Coleccionable coleccionable, string criterio)
-    {
-        Console.WriteLine($"\nComparación {criterio}");
-        
-        Alumno minimo = (Alumno)coleccionable.minimo();
-        Alumno maximo = (Alumno)coleccionable.maximo();
-        
-        Console.WriteLine("Alumno 'mínimo':");
-        Console.WriteLine($"- Nombre: {minimo.getNombre()}");
-        Console.WriteLine($"- Legajo: {minimo.getLegajo()}");
-        Console.WriteLine($"- Promedio: {minimo.getPromedio():0.0}");
-        Console.WriteLine($"- DNI: {minimo.getDni()}");
-        
-        Console.WriteLine("\nAlumno 'máximo':");
-        Console.WriteLine($"- Nombre: {maximo.getNombre()}");
-        Console.WriteLine($"- Legajo: {maximo.getLegajo()}");
-        Console.WriteLine($"- Promedio: {maximo.getPromedio():0.0}");
-        Console.WriteLine($"- DNI: {maximo.getDni()}");
-    }
-
-        static void ImprimirElementos(IIterable coleccionable, string titulo = "Elementos")
-    {
-        Console.WriteLine($"\n=== {titulo} ===");
-        
-        IIterador iterador = coleccionable.CrearIterador();
-        int contador = 1;
-        
-        for (iterador.Primero(); !iterador.Fin(); iterador.Siguiente())
-        {
-            Console.WriteLine($"{contador++}. {iterador.Actual()}");
-        }
-        
-        Console.WriteLine($"Total: {((Coleccionable)coleccionable).cuantos()} alumnos");
-        Console.WriteLine("=====================");
-    }
-
-    static void cambiarEstrategia(Coleccionable coleccionable, IComparacionAlumno estrategia)
-    {
-        IIterador iterador = ((IIterable)coleccionable).CrearIterador();
-        for (iterador.Primero(); !iterador.Fin(); iterador.Siguiente())
-        {
-            if (iterador.Actual() is Alumno alumno)
+            for (int i = 0; i < 15; i++)
             {
-                Alumno.SetEstrategiaComparacion(estrategia);
+                string nombre = nombres[random.Next(nombres.Length)] + " " + nombres[random.Next(nombres.Length)];
+                int dni = 30000000 + random.Next(1000000);
+                int legajo = 1000 + random.Next(9000);
+                double promedio = Math.Round(2 + random.NextDouble() * 8, 2); // Promedio entre 2.00 y 10.00
+
+                Alumno alumno = new Alumno(nombre, dni, legajo, promedio);
+                coleccion.Agregar(alumno);
             }
         }
+
+        static void ImprimirElementos(IColeccionable coleccion)
+        {
+            
+            if (coleccion is IIterable iterable)
+            {
+                IIterador iterador = iterable.CrearIterador();
+                while (iterador.HaySiguiente())
+                {
+                    if (iterador.Siguiente() is Alumno alumno)
+                    {
+                        Console.WriteLine($"- {alumno.GetNombre()} (DNI: {alumno.GetDNI()}, Legajo: {alumno.GetLegajo()}, Promedio: {alumno.GetPromedio()})");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("La colección no implementa IIterable");
+            }
+        }
+
+        static void CambiarEstrategia(IColeccionable coleccion, IEstrategiaComparacion estrategia)
+        {
+            if (coleccion is IIterable iterable)
+            {
+                IIterador iterador = iterable.CrearIterador();
+                while (iterador.HaySiguiente())
+                {
+                    if (iterador.Siguiente() is Alumno alumno)
+                    {
+                        alumno.SetEstrategia(estrategia);
+                    }
+                }
+            }
+        }
+
+                static void InformarColeccion(IColeccionable coleccion)
+        {
+            Console.WriteLine($"Cantidad de elementos: {coleccion.Cuantos()}");
+
+            Alumno minimo = (Alumno)coleccion.Minimo();
+            Console.WriteLine($"Alumno mínimo: {minimo.GetNombre()} (DNI: {minimo.GetDNI()}, Legajo: {minimo.GetLegajo()}, Promedio: {minimo.GetPromedio()})");
+
+            Alumno maximo = (Alumno)coleccion.Maximo();
+            Console.WriteLine($"Alumno máximo: {maximo.GetNombre()} (DNI: {maximo.GetDNI()}, Legajo: {maximo.GetLegajo()}, Promedio: {maximo.GetPromedio()})");
+        }
     }
-}
+} 

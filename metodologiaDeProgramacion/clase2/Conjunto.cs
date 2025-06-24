@@ -5,98 +5,100 @@ using System.Threading.Tasks;
 
 namespace clase2
 {
-    public class Conjunto : Coleccionable , IIterable
+    public class Conjunto : IColeccionable, IIterable
     {
-        private List<Comparable> elementos = new List<Comparable>(); 
-
-        public bool pertenece(Comparable elemento){
-            foreach( Comparable elem in elementos){
-                if(elem.sosIgual(elemento)){
-                    return true;
-                }
-            }
-            return false;
-        }
-        public void agregar(Comparable elemento){
-            if(!pertenece(elemento)){
-                elementos.Add(elemento);
-            }
-
-        }
-
-        public int cuantos(){
+        private List<IComparable> elementos = new List<IComparable>();
+        public int Cuantos()
+        {
             return elementos.Count;
         }
-        public Comparable minimo()
-    {
-        if (elementos.Count == 0)
-            throw new InvalidOperationException("El conjunto está vacío");
-        
-        Comparable min = elementos[0];
-        foreach (Comparable elem in elementos)
-        {
-            if (elem.sosMenor(min))
-            {
-                min = elem;
-            }
-        }
-        return min;
-    }
 
-        public Comparable maximo()
+        public IComparable Minimo()
         {
             if (elementos.Count == 0)
                 throw new InvalidOperationException("El conjunto está vacío");
-        
-            Comparable max = elementos[0];
-            foreach (Comparable elem in elementos)
+
+            IComparable minimo = elementos[0];
+            foreach (var elem in elementos)
             {
-                if (elem.sosMayor(max))
-                {
-                    max = elem;
-                }
+                if (elem.SosMenor(minimo))
+                    minimo = elem;
             }
-            return max;
+            return minimo;
         }
 
-        public bool contiene(Comparable c)
+        public IComparable Maximo()
         {
-            return pertenece(c);
-        }  
+            if (elementos.Count == 0)
+                throw new InvalidOperationException("El conjunto está vacío");
 
-        public IIterador CrearIterador(){
-            return new IteradorConjunto(this);
+            IComparable maximo = elementos[0];
+            foreach (var elem in elementos)
+            {
+                if (elem.SosMayor(maximo))
+                    maximo = elem;
+            }
+            return maximo;
         }
 
+        public void Agregar(IComparable comparable)
+        {
+            if (!Contiene(comparable))
+            {
+                elementos.Add(comparable);
+            }
+        }
+
+        public bool Contiene(IComparable comparable)
+        {
+            foreach (var elem in elementos)
+            {
+                if (elem.SosIgual(comparable))
+                    return true;
+            }
+            return false;
+        }
+
+        // Métodos de IIterable
+        public IIterador CrearIterador()
+        {
+            return new IteradorConjunto(elementos);
+        }
+
+        // Clase interna IteradorConjunto
         private class IteradorConjunto : IIterador
         {
-            private readonly Conjunto conjunto; 
-            private int posicionActual;         
-        
-            public IteradorConjunto(Conjunto conjunto)
+            private int indice = 0;
+            private List<IComparable> elementos;
+
+            public IteradorConjunto(List<IComparable> elementos)
             {
-                this.conjunto = conjunto; 
-                this.posicionActual = 0;  
+                this.elementos = elementos;
             }
-            
-            public void Primero(){
-                posicionActual = 0;
+
+            public bool HaySiguiente()
+            {
+                return indice < elementos.Count;
             }
-            public void Siguiente(){
-                if(!Fin()) 
+
+            public IComparable Siguiente()
+            {
+                return elementos[indice++];
+            }
+        }
+        public void ImprimirElementos()
+        {
+            Console.WriteLine("Elementos en el Conjunto:");
+            foreach (var elem in elementos)
+            {
+                if (elem is Alumno alumno)
                 {
-                    posicionActual++;
+                    Console.WriteLine($"- Nombre: {alumno.GetNombre()}, DNI: {alumno.GetDNI()}, Legajo: {alumno.GetLegajo()}, Promedio: {alumno.GetPromedio()}");
                 }
-            }   
-            public bool Fin(){
-                return posicionActual >= conjunto.elementos.Count;
-            }
-            public Comparable Actual(){
-                if(Fin())
+                else if (elem is Numero numero)
                 {
-                    throw new InvalidOperationException("El iterador ha llegado al final");
+                    Console.WriteLine($"- Número: {numero.GetValor()}");
                 }
-                return conjunto.elementos[posicionActual];
             }
         }
     }

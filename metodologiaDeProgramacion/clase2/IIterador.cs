@@ -7,9 +7,7 @@ namespace clase2
 {
     public interface IIterador
     {
-        void Primero();
-        void Siguiente();   
-        bool Fin();
-        Comparable Actual();
+        bool HaySiguiente();
+        IComparable Siguiente();
     }
 }
