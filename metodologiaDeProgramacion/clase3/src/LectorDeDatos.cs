@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace clase3.src
 {
     public class LectorDeDatos
@@ -22,7 +23,7 @@ namespace clase3.src
         public string StringPorTeclado()
         {
             string? input = Console.ReadLine();
-            return input ?? string.Empty; 
+            return input ?? string.Empty;
         }
     }
 

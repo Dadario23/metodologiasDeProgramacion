@@ -3,99 +3,75 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace clase3.src
 {
-    public class Cola : ColeccionObservable, IIterable  
+    public class Cola : IColeccionable, IIterable
     {
-        private List<Comparable> elementos = new List<Comparable>();
+        private List<IComparable> elementos = new List<IComparable>();
 
-        public void encolar(Comparable c)
-        {
-            elementos.Add(c);
-            Notificar(c);  
-        }
+        public int Cuantos() => elementos.Count;
 
-        public Comparable desencolar()
-        {
-            if (elementos.Count == 0) 
-                throw new InvalidOperationException("Cola vacía");
-            Comparable primero = elementos[0];
-            elementos.RemoveAt(0);
-            return primero;
-        }
-        
-        
-        public override int cuantos() => elementos.Count;
-        
-        public override Comparable minimo()
+        public IComparable Minimo()
         {
             if (elementos.Count == 0)
-                throw new InvalidOperationException("La cola está vacía"); 
-            
-            Comparable min = elementos[0]; 
-            for (int i = 1; i < elementos.Count; i++)
+                throw new InvalidOperationException("La cola está vacía");
+
+            IComparable minimo = elementos[0];
+            foreach (var elem in elementos)
             {
-                if (elementos[i].sosMenor(min))  
-                    min = elementos[i];         
+                if (elem.SosMenor(minimo))
+                    minimo = elem;
             }
-            return min;
+            return minimo;
         }
-        
-        public override Comparable maximo()
+
+        public IComparable Maximo()
         {
             if (elementos.Count == 0)
-                throw new InvalidOperationException("La cola está vacía"); 
-            Comparable max = elementos[0]; 
-            for (int i = 1; i < elementos.Count; i++)
-            {
-                if (elementos[i].sosMayor(max))  
-                    max = elementos[i];         
-            }
-            return max;
-        }
-        
-        public override void agregar(Comparable c) => encolar(c);
+                throw new InvalidOperationException("La cola está vacía");
 
-        public override bool contiene(Comparable comparable)
-        {
-            foreach (var elemento in elementos)
+            IComparable maximo = elementos[0];
+            foreach (var elem in elementos)
             {
-                
-                if (elemento.sosIgual(comparable))
+                if (elem.SosMayor(maximo))
+                    maximo = elem;
+            }
+            return maximo;
+        }
+
+        public void Agregar(IComparable comparable) => elementos.Add(comparable);
+
+        public bool Contiene(IComparable comparable)
+        {
+            foreach (var elem in elementos)
+            {
+                if (elem.SosIgual(comparable))
                     return true;
             }
             return false;
         }
-        
+        public IComparable Desencolar()
+        {
+            if (elementos.Count == 0)
+                throw new InvalidOperationException("La cola está vacía");
+
+            IComparable primero = elementos[0];
+            elementos.RemoveAt(0);
+            return primero;
+        }
         public IIterador CrearIterador() => new IteradorCola(this);
 
         private class IteradorCola : IIterador
         {
-            private readonly Cola cola;
-            private int posicionActual;
+            private Cola cola;
+            private int posicionActual = 0;
 
-            public IteradorCola(Cola cola)
-            {
-                this.cola = cola;
-                this.posicionActual = 0;
-            }
+            public IteradorCola(Cola cola) => this.cola = cola;
 
-            public void Primero() => posicionActual = 0;
+            public bool HaySiguiente() => posicionActual < cola.elementos.Count;
 
-            public void Siguiente()
-            {
-                if (!Fin())
-                    posicionActual++;
-            }
-
-            public bool Fin() => posicionActual >= cola.elementos.Count;
-
-            public Comparable Actual()
-            {
-                if (Fin())
-                    throw new InvalidOperationException("El iterador ha llegado al final");
-                return cola.elementos[posicionActual];
-            }
+            public IComparable Siguiente() => cola.elementos[posicionActual++];
         }
     }
 }

@@ -3,27 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
+
 namespace clase3.src
 {
     public class FabricaDeProfesores : FabricaDeComparables
-    {
-        protected override Comparable CrearAleatorio()
+    {        
+        public FabricaDeProfesores(GeneradorDeDatosAleatorios generador, LectorDeDatos lector) 
+        : base(generador, lector) { }
+        
+        public override IComparable CrearAleatorio()
         {
-            return new Profesor(
-                generador.StringAleatorio(10),
-                generador.NumeroAleatorio(99999999),
-                generador.NumeroAleatorio(30)
-            );
-        }
+            string nombre = generador.StringAleatorio(8); 
+            int dni = generador.NumeroAleatorio(40000000) + 10000000; 
+            int antiguedad = generador.NumeroAleatorio(40); 
 
-        protected override Comparable CrearPorTeclado()
+            return new Profesor(nombre, dni, antiguedad);
+        }
+        
+        public override IComparable CrearPorTeclado()
         {
-            Console.WriteLine("Ingrese datos del profesor:");
+            Console.WriteLine("Ingrese los datos del profesor:");
             Console.Write("Nombre: ");
             string nombre = lector.StringPorTeclado();
+            
             Console.Write("DNI: ");
             int dni = lector.NumeroPorTeclado();
-            Console.Write("Antigüedad: ");
+            
+            Console.Write("Antigüedad (años): ");
             int antiguedad = lector.NumeroPorTeclado();
             
             return new Profesor(nombre, dni, antiguedad);

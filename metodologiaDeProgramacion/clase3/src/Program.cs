@@ -2,178 +2,80 @@
 using clase3.src;
 using clase3;
 
-
-class Program
-{
-    static void Main(string[] args)
+namespace clase3.src
+{       
+    
+    class Program
     {
-        Console.WriteLine("=== Sistema de Colecciones y Observadores ===");
-        Console.WriteLine("1. Trabajar con Números");
-        Console.WriteLine("2. Trabajar con Alumnos");
-        Console.WriteLine("3. Trabajar con Profesores");
-        Console.WriteLine("4. Simular clase con Observer (Ejercicio 12-14)");
-        Console.Write("Seleccione una opción: ");
-        
-        int opcion;
-        string? input = Console.ReadLine();
-        if (!int.TryParse(input, out opcion))
+        static void Main(string[] args)
         {
-            Console.WriteLine("Opción inválida. Finalizando programa.");
-            return;
-        }
+            Console.WriteLine("=== DEMOSTRACIÓN PATRONES PRACTICA 3 ===");
+            Console.WriteLine("=== Factory Method y Observer ===\n");
 
-        switch (opcion)
-        {
-            case 1:
-            case 2:
-            case 3:
-                ProcesarColeccion(opcion);
-                break;
-            case 4:
-                SimularClase();
-                break;
-            default:
-                Console.WriteLine("Opción no válida");
-                break;
-        }
-    }
+            // --- Configuración inicial ---
+            GeneradorDeDatosAleatorios generador = new GeneradorDeDatosAleatorios();
+            LectorDeDatos lector = new LectorDeDatos();
 
-    static void ProcesarColeccion(int tipoElemento)
-    {
-        // Ejercicio 6: Menú unificado para colecciones
-        Console.WriteLine("\n=== Seleccione tipo de colección ===");
-        Console.WriteLine("1. Pila");
-        Console.WriteLine("2. Cola");
-        Console.WriteLine("3. Conjunto");
-        Console.Write("Seleccione: ");
-        int tipoColeccion;
-        string? input = Console.ReadLine();
-        if (!int.TryParse(input, out tipoColeccion))
-        {
-            Console.WriteLine("Tipo de colección inválido. Finalizando operación.");
-            return;
-        }
+            // 1. Demostración Factory Method
+            Console.WriteLine("=== Demostración Factory Method ===");
 
-        Coleccionable coleccion = CrearColeccion(tipoColeccion);
-        Alumno.SetEstrategiaComparacion(new CompararPorPromedio());
-        LlenarColeccion(coleccion, tipoElemento);
-        InformarColeccion(coleccion, tipoElemento);
-    }
+            FabricaDeComparables fabricaAlumnos = new FabricaDeAlumnos(generador, lector);
+            FabricaDeComparables fabricaProfesores = new FabricaDeProfesores(generador, lector);
 
-    static Coleccionable CrearColeccion(int tipo)
-    {
-        return tipo switch
-        {
-            1 => new Pila(),
-            2 => new Cola(),
-            3 => new Conjunto(),
-            _ => throw new ArgumentException("Tipo de colección no válido")
-        };
-    }
+            Pila pilaAlumnos = new Pila();
+            Cola colaProfesores = new Cola();
 
-    static void LlenarColeccion(Coleccionable coleccion, int tipoElemento)
-    {
-        Console.WriteLine($"\n=== Llenando colección ===");
-    for (int i = 0; i < 20; i++)
-    {
-        Console.WriteLine($"Elemento {i + 1} de 20");
-        Console.Write("¿Crear por teclado? (s/n): ");
-        string? respuestaRaw = Console.ReadLine();
-        if (respuestaRaw == null)
-        {
-            Console.WriteLine("Entrada inválida. Usando generación aleatoria por defecto.");
-            respuestaRaw = "n";
-        }
-        string respuesta = respuestaRaw.ToLower();
+            Console.WriteLine("\nLlenando pila con 5 alumnos aleatorios:");
+            LlenarColeccion(pilaAlumnos, 5, fabricaAlumnos);
 
+            Console.WriteLine("\nLlenando cola con 3 profesores aleatorios:");
+            LlenarColeccion(colaProfesores, 3, fabricaProfesores);
 
-        Comparable elemento;
-        if (respuesta == "s")
-        {
-            elemento = FabricaDeComparables.CrearPorTeclado(tipoElemento); 
-        }
-        else
-        {
-            elemento = FabricaDeComparables.CrearAleatorio(tipoElemento); 
-            Console.WriteLine($"Elemento generado: {elemento}");
-        }
+            Console.WriteLine("\nAlumnos en la pila:");
+            ImprimirElementos(pilaAlumnos);
 
-        coleccion.agregar(elemento);
-    }
-    }
+            Console.WriteLine("\nProfesores en la cola:");
+            ImprimirElementos(colaProfesores);
 
-    static void InformarColeccion(Coleccionable coleccion, int tipoElemento)
-    {
-        Console.WriteLine("\n=== Informe ===");
-        Console.WriteLine($"Cantidad de elementos: {coleccion.cuantos()}");
-        Console.WriteLine($"Elemento mínimo: {coleccion.minimo()}");
-        Console.WriteLine($"Elemento máximo: {coleccion.maximo()}");
+            // 2. Implementamos Observer
+            Console.WriteLine("\n=== Demostración Observer ===");
 
-        // Verificación de elemento
-        Console.WriteLine("\n=== Verificar elemento ===");
-        Comparable buscado = FabricaDeComparables.CrearPorTeclado(tipoElemento);
-        
-        Console.WriteLine($"\nBuscando: {buscado}");
-        bool encontrado = coleccion.contiene(buscado);
-        
-        if (encontrado)
-        {
-            Console.WriteLine("El elemento EXISTE en la colección");
-        }
-        else
-        {
-            Console.WriteLine("El elemento NO existe en la colección");
-            Console.WriteLine("Elementos en colección:");
-            if (coleccion is IIterable iterable)
+            Profesor profesor = (Profesor)fabricaProfesores.CrearPorTeclado();
+            Pila alumnosObservadores = new Pila();
+            LlenarColeccion(alumnosObservadores, 3, fabricaAlumnos);
+
+            Console.WriteLine("\nRegistrando alumnos como observadores...");
+            IIterador iterador = alumnosObservadores.CrearIterador();
+            while (iterador.HaySiguiente())
             {
-                ImprimirElementos(iterable); 
+                Alumno alumno = (Alumno)iterador.Siguiente();
+                profesor.AgregarObservador(alumno);
+                Console.WriteLine($"- {alumno.GetNombre()} ahora observa al profesor {profesor.GetNombre()}");
+            }
+
+
+            Console.WriteLine("\nSimulación de clase:");
+            profesor.HablarAlaClase();
+            profesor.EscribirEnElPizarron();
+                
+        }
+
+        static void LlenarColeccion(IColeccionable coleccion, int cantidad, FabricaDeComparables fabrica)
+        {
+            for (int i = 0; i < cantidad; i++)
+            {
+                coleccion.Agregar(fabrica.CrearAleatorio());
             }
         }
-    }
 
-    static void ImprimirElementos(IIterable coleccion)
-    {
-        Console.WriteLine("\n=== Elementos en la colección ===");
-        IIterador iterador = coleccion.CrearIterador();
-        int contador = 1;
-
-        for (iterador.Primero(); !iterador.Fin(); iterador.Siguiente())
+        static void ImprimirElementos(IColeccionable coleccion)
         {
-            Console.WriteLine($"{contador++}. {iterador.Actual()}");
+            IIterador iterador = ((IIterable)coleccion).CrearIterador();
+            while (iterador.HaySiguiente())
+            {
+                IComparable elemento = iterador.Siguiente();
+                Console.WriteLine($"- {elemento}");
+            }
         }
-    }
-
-    static void SimularClase()
-    {
-        // Ejercicio 14: Simulación de clase con Observer
-        Console.WriteLine("\n=== Simulación de Clase ===");
-        
-        
-        Profesor profesor = new Profesor("Lic. Martínez", 25456879, 10);
-        
-        // Crear 20 alumnos y asignarlos como observadores
-        for (int i = 1; i <= 20; i++)
-        {
-            Alumno alumno = (Alumno)FabricaDeComparables.CrearAleatorio(2); 
-            profesor.AgregarObservador(alumno);
-            Console.WriteLine($"{alumno.getNombre()} listo para la clase");
-        }
-
-        // Ejercicio 13: Dictado de clases
-        DictarClase(profesor);
-    }
-
-    static void DictarClase(Profesor profesor)
-    {
-        Console.WriteLine("\n=== Comienza la clase ===");
-        for (int i = 1; i <= 5; i++)
-        {
-            Console.WriteLine($"\nAcción {i}:");
-            profesor.HablarALaClase();
-            System.Threading.Thread.Sleep(1500);
-            profesor.EscribirEnElPizarron();
-            System.Threading.Thread.Sleep(1500);
-        }
-        Console.WriteLine("\n=== La clase ha finalizado ===");
     }
 }

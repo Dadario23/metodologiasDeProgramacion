@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace clase3
+namespace clase3.src
 {
     public interface IIterador
     {
-        void Primero();
-        void Siguiente();   
-        bool Fin();
-        Comparable Actual();
+        bool HaySiguiente();
+        IComparable Siguiente();
     }
 }

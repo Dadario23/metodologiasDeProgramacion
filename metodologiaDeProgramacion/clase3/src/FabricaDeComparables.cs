@@ -3,38 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace clase3.src
 {
-     public abstract class FabricaDeComparables
+    public abstract class FabricaDeComparables
     {
-        protected GeneradorDeDatosAleatorios generador = new GeneradorDeDatosAleatorios();
-        protected LectorDeDatos lector = new LectorDeDatos();
+        protected GeneradorDeDatosAleatorios generador;
+        protected LectorDeDatos lector;
         
-        
-        public static Comparable CrearAleatorio(int opcion)
+        public FabricaDeComparables(GeneradorDeDatosAleatorios generador, LectorDeDatos lector)
         {
-            return CrearFabrica(opcion).CrearAleatorio();
+            this.generador = generador;
+            this.lector = lector;
         }
         
-        public static Comparable CrearPorTeclado(int opcion)
-        {
-            return CrearFabrica(opcion).CrearPorTeclado();
-        }
-        
-        // Método factory para crear fábricas concretas
-        private static FabricaDeComparables CrearFabrica(int opcion)
-        {
-            return opcion switch
-            {
-                1 => new FabricaDeNumeros(),
-                2 => new FabricaDeAlumnos(),
-                3 => new FabricaDeProfesores(),
-                _ => throw new ArgumentException("Opción no válida")
-            };
-        }
-        
-        
-        protected abstract Comparable CrearAleatorio();
-        protected abstract Comparable CrearPorTeclado();
+        public abstract IComparable CrearAleatorio();
+        public abstract IComparable CrearPorTeclado();
     }
 }

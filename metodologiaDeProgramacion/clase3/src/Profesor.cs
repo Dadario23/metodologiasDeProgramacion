@@ -3,45 +3,80 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+// OK
+
 namespace clase3.src
 {
-    public class Profesor : Persona, Comparable
+    public class Profesor : Persona, IComparable, IObservable
     {
+        // Atributos
         private int antiguedad;
         private List<IObservador> observadores = new List<IObservador>();
-        
-        public Profesor(string n, int d, int a) : base(n, d) => antiguedad = a;
+
+        // Constructor
+        public Profesor(string nombre, int dni, int antiguedad) 
+            : base(nombre, dni)
+        {
+            this.antiguedad = antiguedad;
+        }
+
         
         public int GetAntiguedad() => antiguedad;
-        
-        public void HablarALaClase()
+
+        public void AgregarObservador(IObservador observador)
         {
-            Console.WriteLine("Hablando de algún tema");
-            Notificar(this); 
+            observadores.Add(observador);
         }
-        
+
+        public void Notificar(string evento)
+        {
+            foreach (var observador in observadores)
+            {
+                observador.Actualizar(evento);
+            }
+        }
+
+        public void HablarAlaClase()
+        {
+            Console.WriteLine($"{GetNombre()} está hablando a la clase...");
+            Notificar("hablar");
+        }
+
         public void EscribirEnElPizarron()
         {
-            Console.WriteLine("Escribiendo en el pizarrón");
-            Notificar(this); 
+            Console.WriteLine($"{GetNombre()} escribe en el pizarrón...");
+            Notificar("escribir");
         }
-        
-        public void AgregarObservador(IObservador o) => observadores.Add(o);
-        
-        private void Notificar(Comparable valor)
+
+        // Opcional para el ejercicio 15 (AlumnoFavorito)
+        /* public void HacerSilencio()
         {
-            foreach (var o in observadores)
-                o.Actualizar(valor);
+            Console.WriteLine("¡Silencio, no se distraigan!");
+        } */
+
+        
+        public override bool SosIgual(IComparable comparable)
+        {
+            Profesor otroProfesor = (Profesor)comparable;
+            return this.antiguedad == otroProfesor.antiguedad;
         }
+
+        public override bool SosMenor(IComparable comparable)
+        {
+            Profesor otroProfesor = (Profesor)comparable;
+            return this.antiguedad < otroProfesor.antiguedad;
+        }
+
+        public override bool SosMayor(IComparable comparable)
+        {
+            Profesor otroProfesor = (Profesor)comparable;
+            return this.antiguedad > otroProfesor.antiguedad;
+        }
+
         
-        // Implementación de Comparable
-        public bool SosIgual(Comparable c) => 
-            antiguedad == ((Profesor)c).antiguedad;
-        
-        public bool SosMenor(Comparable c) => 
-            antiguedad < ((Profesor)c).antiguedad;
-        
-        public bool SosMayor(Comparable c) => 
-            antiguedad > ((Profesor)c).antiguedad;
+        public override string ToString()
+        {
+            return $"Profesor: {GetNombre()}, DNI: {GetDNI()}, Antigüedad: {antiguedad} años";
+        }
     }
 }

@@ -3,99 +3,82 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace clase3.src  
+namespace clase3.src
 {
-    public class Alumno : Persona, IObservador, Comparable
-{
-    private int legajo;
-    private float promedio;
-    private static IComparacionAlumno estrategiaComparacion = new ComparacionExacta();
-
-    
-    public class ComparacionExacta : IComparacionAlumno
+    public class Alumno : Persona, IComparable, IObservador
     {
-        public bool SosIgual(Alumno a, Alumno b) => 
-            a.getDni() == b.getDni() && 
-            a.getLegajo() == b.getLegajo() &&
-            Math.Abs(a.getPromedio() - b.getPromedio()) < 0.01f;
+        // Atributos
+        private int legajo;
+        private double promedio;
+        private IEstrategiaComparacion estrategia; 
+        
 
-        public bool SosMenor(Alumno a, Alumno b) => 
-            // Mantener lógica original para ordenamiento
-            a.getPromedio() < b.getPromedio();
-
-        public bool SosMayor(Alumno a, Alumno b) => 
-            a.getPromedio() > b.getPromedio();
-    }
-    private static readonly Random rnd = new Random();
-
-    public Alumno(string nombre, int dni, int legajo, float promedio) 
-        : base(nombre, dni)
-    {
-        this.legajo = legajo;
-        this.promedio = promedio;
-    }
-
-    public int getLegajo() => legajo;
-    public float getPromedio() => promedio;
-
-    public static void SetEstrategiaComparacion(IComparacionAlumno estrategia)
-    {
-        estrategiaComparacion = estrategia ?? throw new ArgumentNullException(nameof(estrategia));
-    }
-
-   
-    public override bool sosIgual(Comparable c)
-    {
-        if (c is Alumno otro)
+        // Constructor
+        public Alumno(string nombre, int dni, int legajo, double promedio) 
+            : base(nombre, dni)
         {
-            
-            return this.getDni() == otro.getDni() && 
-                this.getLegajo() == otro.getLegajo() &&
-                Math.Abs(this.getPromedio() - otro.getPromedio()) < 0.01f;
+            this.legajo = legajo;
+            this.promedio = promedio;
+            this.estrategia = new EstrategiaPorNombre(); // Estrategia por defecto
         }
-        return false;
-    }
 
-    public override bool sosMenor(Comparable c)
-    {
-        return c is Alumno otro && estrategiaComparacion.SosMenor(this, otro);
-    }
+        // Propiedades
+        public int GetLegajo() => legajo;
+        public double GetPromedio() => promedio;
 
-    public override bool sosMayor(Comparable c)
-    {
-        return c is Alumno otro && estrategiaComparacion.SosMayor(this, otro);
-    }
-
-    
-    public void Actualizar(Comparable valor)
-    {
-        if (valor is Profesor)
+        // Métodos para Strategy (Práctica 2)
+        public void SetEstrategia(IEstrategiaComparacion estrategia)
         {
-            if (rnd.Next(2) == 0) 
-                PrestarAtencion();
-            else
-                Distraerse();
+            this.estrategia = estrategia;
+        }
+
+        
+        public override bool SosIgual(IComparable comparable)
+        {
+            return estrategia.Comparar(this, (Alumno)comparable);
+        }
+
+        public override bool SosMenor(IComparable comparable)
+        {
+            return !estrategia.Comparar(this, (Alumno)comparable) && !this.SosIgual(comparable);
+        }
+
+        public override bool SosMayor(IComparable comparable)
+        {
+            return estrategia.Comparar(this, (Alumno)comparable);
+        }
+
+        public void Actualizar(string evento)
+        {
+            switch (evento)
+            {
+                case "hablar":
+                    PrestarAtencion();
+                    break;
+                case "escribir":
+                    Distraerse();
+                    break;
+            }
+        }
+
+        public void PrestarAtencion()
+        {
+            Console.WriteLine($"{GetNombre()} está prestando atención.");
+        }
+
+        public void Distraerse()
+        {
+            string[] distracciones = {
+                "Mirando el celular",
+                "Dibujando en el margen de la carpeta",
+                "Tirando aviones de papel"
+            };
+            Random rnd = new Random();
+            Console.WriteLine($"{GetNombre()} se distrae: {distracciones[rnd.Next(distracciones.Length)]}");
+        }
+        public override string ToString()
+        {
+            return $"Alumno: {GetNombre()}, DNI: {GetDNI()}, Legajo: {legajo}, Promedio: {promedio}";
         }
     }
-
-    public void PrestarAtencion()
-    {
-        Console.WriteLine($"{getNombre()} está prestando atención al profesor");
-    }
-
-    public void Distraerse()
-    {
-        string[] acciones = {
-            "Mirando el celular",
-            "Dibujando en el margen de la carpeta",
-            "Tirando aviones de papel"
-        };
-        Console.WriteLine($"{getNombre()} está {acciones[rnd.Next(acciones.Length)]}");
-    }
-
-    public override string ToString()
-    {
-        return $"{base.ToString()}, Legajo: {legajo}, Promedio: {promedio:0.0}";
-    }
-}
 }

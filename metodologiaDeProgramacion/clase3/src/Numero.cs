@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace clase3
+namespace clase3.src
 {
-    public class Numero : Comparable
+    public class Numero : IComparable
     {
         private int valor;
 
@@ -14,34 +14,34 @@ namespace clase3
             valor = v;
         }
 
-        public int getValor()
+        public int GetValor()
         {
             return this.valor;
         }
 
-        public bool sosIgual(Comparable c)
+        public bool SosIgual(IComparable c)
         {
             Numero otroNumero = (Numero)c;
-            return this.valor == otroNumero.getValor();
+            return this.valor == otroNumero.GetValor();
         }
 
-        public bool sosMenor(Comparable c)
+        public bool SosMenor(IComparable c)
         {
             Numero otroNumero = (Numero)c;
-            return this.valor < otroNumero.getValor();
+            return this.valor < otroNumero.GetValor();
         }
 
-        public bool sosMayor(Comparable c)
+        public bool SosMayor(IComparable c)
         {
             Numero otroNumero = (Numero)c;
-            return this.valor > otroNumero.getValor();
+            return this.valor > otroNumero.GetValor();
         }
 
         public override string ToString()
-    {
-        return valor.ToString(); 
-    }
+        {
+            return valor.ToString();
+        }
 
-         
+
     }
 }

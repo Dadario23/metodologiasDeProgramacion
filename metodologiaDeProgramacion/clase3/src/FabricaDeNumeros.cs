@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace clase3.src
 {
+
     public class FabricaDeNumeros : FabricaDeComparables
     {
-        protected override Comparable CrearAleatorio() => 
-            new Numero(generador.NumeroAleatorio(1000));
+        public FabricaDeNumeros(GeneradorDeDatosAleatorios generador, LectorDeDatos lector) 
+        : base(generador, lector) { }
         
-        protected override Comparable CrearPorTeclado()
+        public override IComparable CrearAleatorio()
         {
-            Console.WriteLine("Ingrese un número:");
-            return new Numero(lector.NumeroPorTeclado());
+            int valor = generador.NumeroAleatorio(100);
+            return new Numero(valor);
+        }
+        
+        public override IComparable CrearPorTeclado()
+        {
+            Console.WriteLine("Ingrese un valor numérico:");
+            int valor = lector.NumeroPorTeclado();
+            return new Numero(valor);
         }
     }
 }

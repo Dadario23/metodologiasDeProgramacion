@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace clase3.src
 {
-    public interface IIterable
+    public interface IObservable
     {
-        IIterador CrearIterador();
+
     }
 }
