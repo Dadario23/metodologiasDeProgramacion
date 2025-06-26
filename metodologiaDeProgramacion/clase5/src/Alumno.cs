@@ -35,7 +35,6 @@ namespace clase5.src
 
         public float getPromedio() => promedio;
 
-        // Cambio importante aquí - agregamos 'new' para el método getNombre
         public new string getNombre() => base.getNombre();
 
         public static void SetCompararPorPromedio(bool porPromedio)

@@ -16,7 +16,7 @@ namespace clase4.src
 
         public override string MostrarCalificacion()
         {
-            return $"{numero}) {componente.MostrarCalificacion()}";
+            return $"{numero}) {componente.MostrarCalificacion()}"; 
         }
     }
 

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace clase5.src
 {
-    public class GeneradorDeDatosAleatorios
+    public class GeneradorDeDatosAleatorios 
     {
-        private Random random = new Random();
+        private Random random = new Random(); 
         
         public int NumeroAleatorio(int max) => random.Next(max);
         

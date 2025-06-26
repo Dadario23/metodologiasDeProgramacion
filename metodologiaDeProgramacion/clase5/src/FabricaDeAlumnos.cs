@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace clase5.src
 {
-    public class FabricaDeAlumnos : FabricaDeComparables
+    public class FabricaDeAlumnos : FabricaDeComparables 
     {
         protected override Comparable CrearAleatorio()
         {

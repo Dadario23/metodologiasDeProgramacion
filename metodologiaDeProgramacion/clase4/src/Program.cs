@@ -12,7 +12,7 @@ namespace clase4.src
             // 1. Creación de alumnos base
             Console.WriteLine("Creando alumnos regulares y estudiosos...");
             
-            List<IAlumnoDecorado> alumnos = new List<IAlumnoDecorado>();
+            List<IAlumnoDecorado> alumnos = new List<IAlumnoDecorado>(); 
             
             // Crear 5 alumnos regulares
             for (int i = 1; i <= 5; i++)
