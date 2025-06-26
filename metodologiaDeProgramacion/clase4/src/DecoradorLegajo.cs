@@ -11,7 +11,6 @@ namespace clase4.src
 
         public override string MostrarCalificacion()
         {
-            // Asumiendo que IAlumnoDecorado ahora incluye GetLegajo()
             return $"{componente.MostrarCalificacion()} (Legajo: {componente.GetLegajo()})";
         }
     }

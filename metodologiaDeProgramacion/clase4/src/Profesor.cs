@@ -34,7 +34,6 @@ namespace clase4.src
                 o.Actualizar(valor);
         }
         
-        // Implementación de Comparable
         public override bool SosIgual(IComparable c) => 
             antiguedad == ((Profesor)c).antiguedad;
         

@@ -36,22 +36,18 @@ namespace clase4.src
             {
                 int sumaPuntos = 0;
                 
-                // Responder 10 preguntas
                 for (int pregunta = 1; pregunta <= 10; pregunta++)
                 {
                     sumaPuntos += alumno.ResponderPregunta(pregunta);
                 }
                 
-                // Convertir a escala 0-10
                 int calificacion;
                 if (alumno is AlumnoMuyEstudioso)
                 {
-                    // Escala 7-10 puntos por pregunta → 70-100 total → 7-10 final
                     calificacion = (int)Math.Round(sumaPuntos / 10.0);
                 }
                 else
                 {
-                    // Escala 1-3 puntos por pregunta → 10-30 total → 1-10 final
                     calificacion = (int)Math.Round(sumaPuntos / 3.0);
                 }
                 
@@ -73,7 +69,7 @@ namespace clase4.src
             Console.WriteLine("\nOrdenando alumnos por calificación...");
             var alumnosOrdenados = alumnos
                 .OrderByDescending(a => a.GetCalificacion())
-                .ThenBy(a => a.GetNombre()) // Orden secundario por nombre
+                .ThenBy(a => a.GetNombre())
                 .ToList();
 
             // 5. Aplicar decoradores finales (orden y recuadro)
@@ -106,24 +102,7 @@ namespace clase4.src
                 Console.WriteLine($"- {adaptado.getName()} -> Resultado: {adaptado.showResult()}");
             }
 
-            // 8. Análisis estadístico opcional
-            Console.WriteLine("\n=== Estadísticas ===");
-            var regulares = alumnos.OfType<Alumno>().ToList();
-            var estudiosos = alumnos.OfType<AlumnoMuyEstudioso>().ToList();
 
-            if (regulares.Any())
-            {
-                Console.WriteLine($"Promedio Regulares: {regulares.Average(a => a.GetCalificacion()):F2}");
-                Console.WriteLine($"Nota mínima Regular: {regulares.Min(a => a.GetCalificacion())}");
-                Console.WriteLine($"Nota máxima Regular: {regulares.Max(a => a.GetCalificacion())}");
-            }
-
-            if (estudiosos.Any())
-            {
-                Console.WriteLine($"Promedio Estudiosos: {estudiosos.Average(a => a.GetCalificacion()):F2}");
-                Console.WriteLine($"Nota mínima Estudioso: {estudiosos.Min(a => a.GetCalificacion())}");
-                Console.WriteLine($"Nota máxima Estudioso: {estudiosos.Max(a => a.GetCalificacion())}");
-            }
         }
     }
 }

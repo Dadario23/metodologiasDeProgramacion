@@ -37,10 +37,8 @@ namespace clase4.src
         public virtual int GetCalificacion() => componente.GetCalificacion();
         public virtual int CompareTo(object? obj)
         {
-            // Verificar nulos primero
             if (obj == null) return 1;
             
-            // Delegar la comparación al componente
             if (componente is IComparable comparable)
                 return comparable.CompareTo(obj is IAlumnoDecorado decorado ? decorado : obj);
             
