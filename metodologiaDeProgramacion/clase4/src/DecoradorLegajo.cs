@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace src.clase4
+namespace clase4.src
 {
     public class DecoradorLegajo : DecoradorAlumno
     {
-        public DecoradorLegajo(Alumno alumno) : base(alumno) { }
+        public DecoradorLegajo(IAlumnoDecorado comp) : base(comp) { }
 
-        public override string MostrarCalificación()
+        public override string MostrarCalificacion()
         {
-            return $"{base.MostrarCalificación()} (Legajo: {getLegajo()})"; 
+            // Asumiendo que IAlumnoDecorado ahora incluye GetLegajo()
+            return $"{componente.MostrarCalificacion()} (Legajo: {componente.GetLegajo()})";
         }
     }
+
 }

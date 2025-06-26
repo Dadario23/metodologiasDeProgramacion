@@ -3,24 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace src.clase4
+namespace clase4.src
 {
-    public abstract class DecoradorAlumno : Alumno
+    public abstract class DecoradorAlumno : IAlumnoDecorado
     {
-        protected Alumno _alumno;
-        public DecoradorAlumno(Alumno alumno) : base("", 0, 0, 0)  
+        protected IAlumnoDecorado componente;
+
+        public DecoradorAlumno(IAlumnoDecorado comp)
         {
-            _alumno = alumno;
+            componente = comp;
         }
 
-        public override string getNombre() => _alumno.getNombre();
-        public override int getDni() => _alumno.getDni();
-        public override int getLegajo() => _alumno.getLegajo();
-        public override float getPromedio() => _alumno.getPromedio();
-        public override int Calificación 
+        public virtual int GetLegajo() => componente.GetLegajo();
+
+        public virtual bool SosIgual(IComparable comparable)
         {
-            get => _alumno.Calificación;
-            set => _alumno.Calificación = value;
+            return componente.SosIgual(comparable);
         }
+
+        public virtual bool SosMenor(IComparable comparable)
+        {
+            return componente.SosMenor(comparable);
+        }
+
+        public virtual bool SosMayor(IComparable comparable)
+        {
+            return componente.SosMayor(comparable);
+        }
+
+        public virtual string MostrarCalificacion() => componente.MostrarCalificacion();
+        public virtual int ResponderPregunta(int pregunta) => componente.ResponderPregunta(pregunta);
+        public virtual string GetNombre() => componente.GetNombre();
+        public virtual int GetCalificacion() => componente.GetCalificacion();
+        public virtual int CompareTo(object? obj)
+        {
+            // Verificar nulos primero
+            if (obj == null) return 1;
+            
+            // Delegar la comparación al componente
+            if (componente is IComparable comparable)
+                return comparable.CompareTo(obj is IAlumnoDecorado decorado ? decorado : obj);
+            
+            throw new ArgumentException("El objeto no es comparable");
+        }
+
+
+        public virtual void SetCalificacion(int nota)
+        {
+            componente.SetCalificacion(nota);
+        }
+
     }
+
 }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace src.clase4
+namespace clase4.src
 {
    public interface IObservador
     {
-        void Actualizar(Comparable valor);
+        void Actualizar(IComparable valor);
     }
 }

@@ -3,39 +3,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace src.clase4
+namespace clase4.src
 {
     public class AlumnoAdapter : Student
     {
-        private Alumno _alumnoBase;  
+        private IAlumnoDecorado alumno;
 
-    public AlumnoAdapter(Alumno alumno)
-    {
-        _alumnoBase = alumno;  
+        public AlumnoAdapter(IAlumnoDecorado alumno)
+        {
+            this.alumno = alumno;
+        }
+
+        public string getName()
+        {
+            return alumno.GetNombre();
+        }
+
+        public int yourAnswerIs(int question)
+        {
+            return alumno.ResponderPregunta(question);
+        }
+
+        public void setScore(int score)
+        {
+            alumno.SetCalificacion(score);
+        }
+
+        public string showResult()
+        {
+            return alumno.MostrarCalificacion();
+        }
+
+        public bool equals(Student s)
+        {
+            return this.getScore() == s.getScore();
+        }
+
+        public bool lessThan(Student s)
+        {
+            return this.getScore() < s.getScore();
+        }
+
+        public bool greaterThan(Student s)
+        {
+            return this.getScore() > s.getScore();
+        }
+
+        public int getScore()
+        {
+            return alumno.GetCalificacion();
+        }
     }
-    public int getScore() => _alumnoBase.Calificación;
 
-    public void setScore(int score)
-    {
-        _alumnoBase.Calificación = score;  
-    }
 
-        public string getName() => _alumnoBase.getNombre();
-        
-        public int yourAnswerIs(int question) => _alumnoBase.ResponderPregunta(question);
-        
-        
 
-        public string showResult() => _alumnoBase.MostrarCalificación();
-        
-        public bool equals(Student student) 
-            => _alumnoBase.sosIgual(((AlumnoAdapter)student)._alumnoBase);
-        
-        public bool lessThan(Student student) 
-            => _alumnoBase.sosMenor(((AlumnoAdapter)student)._alumnoBase);
-        
-        public bool greaterThan(Student student) 
-            => _alumnoBase.sosMayor(((AlumnoAdapter)student)._alumnoBase);
-
-  }
 }

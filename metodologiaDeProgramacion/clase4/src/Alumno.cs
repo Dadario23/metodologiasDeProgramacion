@@ -3,63 +3,73 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace src.clase4
+namespace clase4.src
 {
-    public class Alumno : Persona
+    public class Alumno : Persona, IAlumnoDecorado, IComparable
     {
+        private int calificacion;
         private int legajo;
-        private float promedio;
-        private static bool compararPorPromedio = false;
+        private double promedio;
+        protected Random random = new Random();
 
-        public Alumno(string nombre, int dni, int legajo, float promedio) 
-            : base(nombre, dni)
+        public Alumno(string nombre, int legajo, int dni) : base(nombre, dni)
         {
             this.legajo = legajo;
-            this.promedio = promedio;
+            this.promedio = 0;
+            this.SetCalificacion(0);
         }
+
+        // Implementación de IAlumnoDecorado
+        public int GetLegajo() => legajo;
+        public override string GetNombre() => base.GetNombre();
+        public double GetPromedio() => promedio;
+        public int GetCalificacion() => calificacion;
+        public void SetCalificacion(int nota) => calificacion = nota;
 
         public virtual int ResponderPregunta(int pregunta)
         {
-            Random rnd = new Random();
-            return rnd.Next(1, 4); 
-        }
-        public virtual int Calificación { get; set; }  
-        public virtual string MostrarCalificación() => $"{getNombre()}    {Calificación}";
-        public virtual int getLegajo() => legajo;
-        public virtual float getPromedio() => promedio;
-
-        public static void SetCompararPorPromedio(bool porPromedio)
-        {
-            compararPorPromedio = porPromedio;
+            return random.NextDouble() < 0.7 ? random.Next(1, 3) : 0;
         }
 
-        public static bool GetCompararPorPromedio()
+        public virtual string MostrarCalificacion()
         {
-            return compararPorPromedio;
+            return $"{base.GetNombre()} {calificacion}";
         }
 
-        public override bool sosIgual(Comparable c)
+        // Implementación explícita de IComparable
+        int IComparable.CompareTo(object? obj)
         {
-            Alumno otro = (Alumno)c;
-            return compararPorPromedio ? 
-                this.promedio == otro.promedio : 
-                this.legajo == otro.legajo;
+            if (obj == null) return 1;
+            
+            if (obj is IAlumnoDecorado otro)
+            {
+                int calComparison = this.calificacion.CompareTo(otro.GetCalificacion());
+                if (calComparison != 0) return calComparison;
+                
+                if (obj is Alumno alumno) 
+                    return this.legajo.CompareTo(alumno.legajo);
+                    
+                return 0;
+            }
+            
+            throw new ArgumentException("El objeto no es IAlumnoDecorado");
         }
 
-        public override bool sosMenor(Comparable c)
-        {
-            Alumno otro = (Alumno)c;
-            return compararPorPromedio ? 
-                this.promedio < otro.promedio : 
-                this.legajo < otro.legajo;
-        }
+            public override bool SosIgual(IComparable comparable)
+            {
+                return this.calificacion == ((IAlumnoDecorado)comparable).GetCalificacion();
+            }
 
-        public override bool sosMayor(Comparable c)
-        {
-            Alumno otro = (Alumno)c;
-            return compararPorPromedio ? 
-                this.promedio > otro.promedio : 
-                this.legajo > otro.legajo;
-        }
+            public override bool SosMenor(IComparable comparable)
+            {
+                return this.calificacion < ((IAlumnoDecorado)comparable).GetCalificacion();
+            }
+
+            public override bool SosMayor(IComparable comparable)
+            {
+                return this.calificacion > ((IAlumnoDecorado)comparable).GetCalificacion();
+            }
+
     }
+
 }

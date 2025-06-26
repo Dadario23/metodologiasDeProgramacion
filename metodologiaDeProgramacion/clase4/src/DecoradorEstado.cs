@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace src.clase4
+namespace clase4.src
 {
-     public class DecoradorEstado : DecoradorAlumno 
+     public class DecoradorEstado : DecoradorAlumno
     {
-        public DecoradorEstado(Alumno alumno) : base(alumno) { }
+        public DecoradorEstado(IAlumnoDecorado comp) : base(comp) { }
 
-        public override string MostrarCalificación()
+        public override string MostrarCalificacion()
         {
-            string estado = _alumno.Calificación >= 7 ? "PROMOCIÓN" : 
-                           _alumno.Calificación >= 4 ? "APROBADO" : "DESAPROBADO";
-            return $"{_alumno.MostrarCalificación()} ({estado})";
+            int nota = componente.GetCalificacion();
+            string estado = nota >= 7 ? "PROMOCION" : (nota >= 4 ? "APROBADO" : "DESAPROBADO");
+            return $"{componente.MostrarCalificacion()} ({estado})";
         }
     }
+
 }

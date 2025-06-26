@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace src.clase4
+namespace clase4.src
 {
-    public class Profesor : Persona, Comparable
+    public class Profesor : Persona, IComparable
     {
         private int antiguedad;
         private List<IObservador> observadores = new List<IObservador>();
@@ -28,20 +28,20 @@ namespace src.clase4
         
         public void AgregarObservador(IObservador o) => observadores.Add(o);
         
-        private void Notificar(Comparable valor)
+        private void Notificar(IComparable valor)
         {
             foreach (var o in observadores)
                 o.Actualizar(valor);
         }
         
         // Implementación de Comparable
-        public bool SosIgual(Comparable c) => 
+        public override bool SosIgual(IComparable c) => 
             antiguedad == ((Profesor)c).antiguedad;
         
-        public bool SosMenor(Comparable c) => 
+        public override bool SosMenor(IComparable c) => 
             antiguedad < ((Profesor)c).antiguedad;
         
-        public bool SosMayor(Comparable c) => 
+        public override bool SosMayor(IComparable c) => 
             antiguedad > ((Profesor)c).antiguedad;
     }
 }

@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace src.clase4
+namespace clase4.src
 {
 	public interface Student
 	{
